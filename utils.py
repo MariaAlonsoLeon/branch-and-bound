@@ -586,5 +586,40 @@ class myFifoQueue(Queue):
         print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
         print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
 
+class myFifoQueue_with_sub(Queue):
+    def __init__(self, problem):
+        super().__init__()
+        self.queue = []
+        self.index_current_node = 0
+        self.problem = problem
+        self.closed_set = set()
+        self.stats2 = 0
 
+    def append(self, item):
+        self.queue.append(item)
 
+    def len(self):     # Devuelve la cantidad de elementos que aún no se han extraído
+        return len(self.queue) - self.index_current_node
+
+    def extend(self, items):
+        # Combina los elementos existentes y los nuevos elementos
+        self.queue.extend(items)
+        # Ordena la cola completa en función de 'path_cost'
+        self.queue.sort(key=lambda current_node: current_node.path_cost + search.GPSProblem.h(self.problem, current_node))
+        #print(self.queue)
+
+    def pop(self):
+        while self.queue:
+            node = self.queue.pop(0)
+            self.stats2 += 1
+            if node.state not in self.closed_set:
+                self.closed_set.add(node.state)
+                return node
+        return None
+
+    def printStats(self):
+        print("\tStats with subestimation:\n")
+        print("\t\t-Visited nodes: ", len(self.closed_set))
+        print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
+        print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
