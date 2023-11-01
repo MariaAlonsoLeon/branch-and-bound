@@ -2,8 +2,9 @@
 
 import search
 
-ab = search.GPSProblem('A', 'B', search.romania)
 problem = search.Problem
+
+ab = search.GPSProblem('A', 'B', search.romania)
 print("------------------A and B------------------\n")
 print("Without Subestimation\n")
 result = search.branch_and_bound_search(ab)
@@ -12,26 +13,24 @@ print("\nWith Subestimation\n")
 result2 = search.branch_and_bound_search_with_sub(ab)
 print("\tPath:", result2.path())
 
-
 zg = search.GPSProblem('Z', 'G', search.romania)
-result = search.branch_and_bound_search(zg)
-result2 = search.branch_and_bound_search_with_sub(zg)
-print("------------------Z and G------------------\n")
+print("\n------------------Z and G------------------\n")
 print("Without Subestimation\n")
+result = search.branch_and_bound_search(zg)
 print("\tPath:", result.path())
 print("\nWith Subestimation\n")
+result2 = search.branch_and_bound_search_with_sub(zg)
 print("\tPath:", result2.path())
-print("------------------------------------------------------")
-
 
 bl = search.GPSProblem('B', 'L', search.romania)
-result = search.branch_and_bound_search(bl)
-result2 = search.branch_and_bound_search_with_sub(bl)
-print("------------------B and L------------------\n")
+print("\n------------------B and L------------------\n")
 print("Without Subestimation\n")
+result = search.branch_and_bound_search(bl)
 print("\tPath:", result.path())
 print("\nWith Subestimation\n")
-print("\tPath :", result2.path())
+result2 = search.branch_and_bound_search_with_sub(bl)
+print("\tPath:", result2.path())
+
 
 # print(search.branch_and_bound_search(ab).path()) # Result: [<Node B>, <Node P>, <Node R>, <Node S>, <Node A>]
 # print(search.branch_and_bound_search_with_sub(ab).path())

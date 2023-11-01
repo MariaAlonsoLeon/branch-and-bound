@@ -1,4 +1,13 @@
-
+import copy
+import math
+import operator
+import os
+import random
+import search
+import sys
+import abstract
+from filecmp import cmp
+from functools import reduce
 #______________________________________________________________________________
 # Simple Data Structures: infinity, Dict, Struct
 
@@ -582,7 +591,7 @@ class myFifoQueue(Queue):
                 return node
         return None
     def printStats(self):
-        print("\tStats without subestimation:\n")
+        print("\tStats:\n")
         print("\t\t-Visited nodes: ", len(self.closed_set))
         print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
         print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
@@ -608,7 +617,7 @@ class myFifoQueue_with_sub(Queue):
         self.queue.extend(items)
         # Ordena la cola completa en función de 'path_cost'
         self.queue.sort(key=lambda current_node: current_node.path_cost + search.GPSProblem.h(self.problem, current_node))
-        #print(self.queue)
+        print(self.queue)
 
     def pop(self):
         while self.queue:
@@ -620,7 +629,7 @@ class myFifoQueue_with_sub(Queue):
         return None
 
     def printStats(self):
-        print("\tStats with subestimation:\n")
+        print("\tStats:\n")
         print("\t\t-Visited nodes: ", len(self.closed_set))
         print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
         print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
