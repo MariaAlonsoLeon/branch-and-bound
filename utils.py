@@ -550,4 +550,41 @@ class FIFOQueue(Queue):
 Fig = {}
 
 
+class myFifoQueue(Queue):
+
+    def __init__(self, problem):
+        super().__init__()
+        self.queue = []
+        self.index_current_node = 0
+        self.closed_set = set()
+        self.problem = problem
+        self.stats2 = 0
+
+    def append(self, item):
+        self.queue.append(item)
+
+    def len(self):     # Devuelve la cantidad de elementos que aún no se han extraído
+        return len(self.queue) - self.index_current_node
+
+    def extend(self, items):
+        self.queue.extend(items)
+        self.queue = sorted(self.queue, key=lambda nodes: nodes.path_cost)
+        print(self.queue)
+
+    def pop(self):
+        while self.queue:
+            node = self.queue.pop(0)
+            self.stats2 += 1
+            if node.state not in self.closed_set:
+                self.closed_set.add(node.state)
+                return node
+        return None
+    def printStats(self):
+        print("\tStats without subestimation:\n")
+        print("\t\t-Visited nodes: ", len(self.closed_set))
+        print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
+        print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
+
+
 
