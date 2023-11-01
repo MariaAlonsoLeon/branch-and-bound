@@ -3,7 +3,7 @@
 The way to use this code is to subclass Problem to create a class of problems,
 then create problem instances and solve them with calls to the various search
 functions."""
-
+import abstract
 
 from utils import *
 import random
@@ -118,7 +118,19 @@ def depth_first_graph_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
     return graph_search(problem, Stack())
 
+def branch_and_bound_search(problem):
+    queue = myFifoQueue(problem)
+    search = graph_search(problem, queue)
+    queue.printStats()
+    return search
 
+# ______________________________________________________________________________
+## Informed Search algorithm
+def branch_and_bound_search_with_sub(problem):
+    queue = myFifoQueue_with_sub(problem)
+    search = graph_search(problem, queue)
+    queue.printStats()
+    return search
 
 # _____________________________________________________________________________
 # The remainder of this file implements examples for the search algorithms.
