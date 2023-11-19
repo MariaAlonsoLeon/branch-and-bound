@@ -570,6 +570,7 @@ class myFifoQueue(Queue):
         self.closed_set = set()
         self.problem = problem
         self.stats2 = 0
+        self.closed_set2 = set()
 
     def append(self, item):
         self.queue.append(item)
@@ -578,8 +579,12 @@ class myFifoQueue(Queue):
         return len(self.queue) - self.index_current_node
 
     def extend(self, items):
+        # Combina los elementos existentes y los nuevos elementos
         self.queue.extend(items)
+        # Ordena la cola completa en función de 'path_cost'
         self.queue = sorted(self.queue, key=lambda nodes: nodes.path_cost)
+        for item in items:
+            self.closed_set2.add(item.state)
         print(self.queue)
 
     def pop(self):
@@ -590,12 +595,22 @@ class myFifoQueue(Queue):
                 self.closed_set.add(node.state)
                 return node
         return None
+
     def printStats(self):
         print("\tStats:\n")
         print("\t\t-Visited nodes: ", len(self.closed_set))
         print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
-        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2) # Generados con repetición
+        print("\t\t-Nodos generados: ", len(self.closed_set2)) # Generados sin repetición
         print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
+
+
+    def printQualiyt(self):
+        print("\tQuality:\n")
+        print("\t\t-Speed (1 / visited nodes): ", round((1/len(self.closed_set)), 2))
+        print("\t\t-Memory (1 / generated nodes with rep): ", round(1 / self.stats2, 2), "\n")
+
+
 
 class myFifoQueue_with_sub(Queue):
     def __init__(self, problem):
@@ -605,6 +620,7 @@ class myFifoQueue_with_sub(Queue):
         self.problem = problem
         self.closed_set = set()
         self.stats2 = 0
+        self.closed_set2 = set()
 
     def append(self, item):
         self.queue.append(item)
@@ -617,6 +633,8 @@ class myFifoQueue_with_sub(Queue):
         self.queue.extend(items)
         # Ordena la cola completa en función de 'path_cost'
         self.queue.sort(key=lambda current_node: current_node.path_cost + search.GPSProblem.h(self.problem, current_node))
+        for item in items:
+            self.closed_set2.add(item.state)
         print(self.queue)
 
     def pop(self):
@@ -632,5 +650,11 @@ class myFifoQueue_with_sub(Queue):
         print("\tStats:\n")
         print("\t\t-Visited nodes: ", len(self.closed_set))
         print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
-        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2) # Generados con repetición
+        print("\t\t-Nodos generados: ", len(self.closed_set2)) # Generados sin repetición
         print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
+
+    def printQualiyt(self):
+        print("\tQuality:\n")
+        print("\t\t-Speed (1 / visited nodes): ", round((1/len(self.closed_set)), 2))
+        print("\t\t-Memory (1 / generated nodes with rep): ", round(1 / self.stats2, 2), "\n")

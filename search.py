@@ -122,6 +122,7 @@ def branch_and_bound_search(problem):
     queue = myFifoQueue(problem)
     search = graph_search(problem, queue)
     queue.printStats()
+    queue.printQualiyt()
     return search
 
 # ______________________________________________________________________________
@@ -130,6 +131,7 @@ def branch_and_bound_search_with_sub(problem):
     queue = myFifoQueue_with_sub(problem)
     search = graph_search(problem, queue)
     queue.printStats()
+    queue.printQualiyt()
     return search
 
 # _____________________________________________________________________________
