@@ -535,6 +535,10 @@ class FIFOQueue(Queue):
         self.A = []
         self.start = 0
 
+        self.closed_set = set()
+        self.stats2 = 0
+        self.closed_set2 = set()
+
     def append(self, item):
         self.A.append(item)
 
@@ -543,14 +547,35 @@ class FIFOQueue(Queue):
 
     def extend(self, items):
         self.A.extend(items)
+        for item in items:
+            self.closed_set2.add(item.state)
 
     def pop(self):
         e = self.A[self.start]
         self.start += 1
+        self.stats2 += 1
         if self.start > 5 and self.start > len(self.A) / 2:
             self.A = self.A[self.start:]
             self.start = 0
+
+
+        if e.state not in self.closed_set:
+            self.closed_set.add(e.state)
+
         return e
+
+    def printStats(self):
+        print("\tStats:\n")
+        print("\t\t-Visited nodes: ", len(self.closed_set))
+        print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2) # Generados con repetición
+        print("\t\t-Nodos generados: ", len(self.closed_set2)) # Generados sin repetición
+        print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
+
+    def printQualiyt(self):
+        print("\tQuality:\n")
+        print("\t\t-Speed (1 / visited nodes): ", round((1/len(self.closed_set)), 2))
+        print("\t\t-Memory (1 / generated nodes with rep): ", round(1 / self.stats2, 2), "\n")
 
 
 
@@ -609,8 +634,6 @@ class myFifoQueue(Queue):
         print("\tQuality:\n")
         print("\t\t-Speed (1 / visited nodes): ", round((1/len(self.closed_set)), 2))
         print("\t\t-Memory (1 / generated nodes with rep): ", round(1 / self.stats2, 2), "\n")
-
-
 
 class myFifoQueue_with_sub(Queue):
     def __init__(self, problem):

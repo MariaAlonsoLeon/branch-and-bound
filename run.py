@@ -4,6 +4,8 @@ import search
 
 problem = search.Problem
 
+# ROMANIA
+
 ab = search.GPSProblem('A', 'B', search.romania)
 print("------------------A and B------------------\n")
 print("Without Subestimation\n")
@@ -49,3 +51,41 @@ print("\tPath:", result2.path())
 # Result:
 # [<Node B>, <Node P>, <Node R>, <Node S>, <Node A>] : 101 + 97 + 80 + 140 = 418
 # [<Node B>, <Node F>, <Node S>, <Node A>] : 211 + 99 + 140 = 450
+
+
+# Australia
+ab = search.GPSProblem('WA', 'V', search.australia)
+print("------------------WA and V------------------\n")
+print("Without Subestimation\n")
+result = search.branch_and_bound_search(ab)
+print("\tPath:", result.path())
+print("\nWith Subestimation\n")
+result2 = search.branch_and_bound_search_with_sub(ab)
+print("\tQuality Solution (1 / shortest solution length): ", round(1 / len(result2.path()), 2))
+print("\tComparison with breadth_first: ", round(1 / len(search.breadth_first_graph_search(ab).path()), 2))
+print("\tComparison with depth_first: ", round(1 / len(search.depth_first_graph_search(ab).path()), 2))
+print("\tPath:", result2.path())
+
+zg = search.GPSProblem('NT', 'NSW', search.australia)
+print("\n------------------NT and NSW------------------\n")
+print("Without Subestimation\n")
+result = search.branch_and_bound_search(zg)
+print("\tPath:", result.path())
+print("\nWith Subestimation\n")
+result2 = search.branch_and_bound_search_with_sub(zg)
+print("\tQuality Solution (1 / shortest solution length): ", round(1 / len(result2.path()), 2))
+print("\tComparison with breadth_first: ", round(1 / len(search.breadth_first_graph_search(zg).path()), 2))
+print("\tComparison with depth_first: ", round(1 / len(search.depth_first_graph_search(zg).path()), 2))
+print("\tPath:", result2.path())
+
+bl = search.GPSProblem('Q', 'V', search.australia)
+print("\n------------------Q and V------------------\n")
+print("Without Subestimation\n")
+result = search.branch_and_bound_search(bl)
+print("\tPath:", result.path())
+print("\nWith Subestimation\n")
+result2 = search.branch_and_bound_search_with_sub(bl)
+print("\tQuality Solution (1 / shortest solution length): ", round(1 / len(result2.path()), 2))
+print("\tComparison with breadth_first: ", round(1 / len(search.breadth_first_graph_search(bl).path()), 2))
+print("\tComparison with depth_first: ", round(1 / len(search.depth_first_graph_search(bl).path()), 2))
+print("\tPath:", result2.path())
