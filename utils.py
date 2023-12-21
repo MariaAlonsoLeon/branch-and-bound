@@ -567,7 +567,7 @@ class StackQueue:
     def printQualiyt(self):
         print("\tCalidad:\n")
         print("\t\t-Velocidad (1 / nodos visitados): ", round((1/len(self.closed_set)), 2))
-        print("\t\t-Memoria (1 / nodos generados con repetición): ", round(1 / len(self.closed_set), 2), "\n")
+        print("\t\t-Memoria (1 / nodos generados con repetición): ", round(1 / len(self.closed_list), 2), "\n")
 
 
 class FIFOQueue(Queue):
@@ -619,7 +619,7 @@ class FIFOQueue(Queue):
     def printQualiyt(self):
         print("\tCalidad:\n")
         print("\t\t-Velocidad (1 / nodos visitados): ", round((1/len(self.closed_set)), 2))
-        print("\t\t-Memoria (1 / nodos generados con repetición): ", round(1 / self.stats2, 2), "\n")
+        print("\t\t-Memoria (1 / nodos generados con repetición): ", round(1 / len(self.closed_list), 2), "\n")
 
 
 
@@ -661,6 +661,7 @@ class my_priority_queue(Queue):
     def pop(self):
         while self.queue:
             node = self.queue.pop(0)
+            # print(node.state)
             self.stats2 += 1
             if node.state not in self.closed_set:
                 self.closed_set.add(node.state)
@@ -671,7 +672,6 @@ class my_priority_queue(Queue):
         print("\tStats:\n")
         print("\t\t-Nodos vistados: ", len(self.closed_set))
         print("\t\t-Nodos no visitados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
-        #print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
         print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.closed_list) # Generados con repetición
         print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
 
@@ -679,7 +679,7 @@ class my_priority_queue(Queue):
     def printQualiyt(self):
         print("\tCalidad:\n")
         print("\t\t-Velocidad (1 / nodos visitados): ", round((1/len(self.closed_set)), 2))
-        print("\t\t-Memoria (1 / nodos que han estado alguna vez en el fringe): ", round(1 / self.stats2, 2), "\n")
+        print("\t\t-Memoria (1 / nodos que han estado alguna vez en el fringe): ", round(1 / len(self.closed_list), 2), "\n")
 
 class my_priority_queue_with_sub(Queue):
     def __init__(self, problem):
@@ -729,4 +729,4 @@ class my_priority_queue_with_sub(Queue):
     def printQualiyt(self):
         print("\tCalidad:\n")
         print("\t\t-Velocidad (1 / nodos visitados): ", round((1/len(self.closed_set)), 2))
-        print("\t\t-Memoria (1 / nodos que han estado alguna vez en el fringe): ", round(1 / self.stats2, 2), "\n")
+        print("\t\t-Memoria (1 / nodos que han estado alguna vez en el fringe): ", round(1 / len(self.closed_list), 2), "\n")
