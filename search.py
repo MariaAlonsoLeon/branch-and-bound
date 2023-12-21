@@ -111,15 +111,23 @@ def graph_search(problem, fringe):
 
 def breadth_first_graph_search(problem):
     """Search the shallowest nodes in the search tree first. [p 74]"""
-    return graph_search(problem, FIFOQueue())  # FIFOQueue -> fringe
+    queue = FIFOQueue(problem)
+    search = graph_search(problem, queue)
+    queue.printStats()
+    queue.printQualiyt()
+    return search  # FIFOQueue -> fringe
 
 
 def depth_first_graph_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
-    return graph_search(problem, Stack())
+    queue = StackQueue(problem)
+    search = graph_search(problem, queue)
+    queue.printStats()
+    queue.printQualiyt()
+    return search
 
 def branch_and_bound_search(problem):
-    queue = myFifoQueue(problem)
+    queue = my_priority_queue(problem)
     search = graph_search(problem, queue)
     queue.printStats()
     queue.printQualiyt()
@@ -128,7 +136,7 @@ def branch_and_bound_search(problem):
 # ______________________________________________________________________________
 ## Informed Search algorithm
 def branch_and_bound_search_with_sub(problem):
-    queue = myFifoQueue_with_sub(problem)
+    queue = my_priority_queue_with_sub(problem)
     search = graph_search(problem, queue)
     queue.printStats()
     queue.printQualiyt()
@@ -273,6 +281,7 @@ class GPSProblem(Problem):
         """h function is straight-line distance from a node's state to goal."""
         locs = getattr(self.graph, 'locations', None)
         if locs:
+            #print(int(distance(locs[node.state], locs[self.goal])), " ", node)
             return int(distance(locs[node.state], locs[self.goal]))
         else:
             return infinity

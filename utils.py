@@ -528,16 +528,57 @@ def Stack():
     return []
 
 
+class StackQueue:
+    def __init__(self, problem):
+        self.stack = []
+        self.closed_set = set()
+        self.closed_set2 = set()
+        self.problem = problem
+
+    def append(self, item):
+        self.stack.append(item)
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("pop de un StackQueue vacío")
+        node = self.stack.pop()
+        self.closed_set.add(node)
+        return node
+    def extend(self, items):
+        self.stack.extend(items)
+        for item in items:
+            self.closed_set2.add(item.state)
+
+    def is_empty(self):
+        return not bool(self.stack)
+
+    def __len__(self):
+        return len(self.stack)
+
+    def printStats(self):
+        print("\tStats:\n")
+        print("\t\t-Nodos visitados: ", len(self.closed_set))
+        print("\t\t-Nodos no visitados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", len(self.closed_set)) # Generados con repetición
+        print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
+
+    def printQualiyt(self):
+        print("\tCalidad:\n")
+        print("\t\t-Velocidad (1 / nodos visitados): ", round((1/len(self.closed_set)), 2))
+        print("\t\t-Memoria (1 / nodos generados con repetición): ", round(1 / len(self.closed_set), 2), "\n")
+
+
 class FIFOQueue(Queue):
     """A First-In-First-Out Queue."""
 
-    def __init__(self):
+    def __init__(self, problem):
         self.A = []
         self.start = 0
 
         self.closed_set = set()
         self.stats2 = 0
         self.closed_set2 = set()
+        self.problem = problem
 
     def append(self, item):
         self.A.append(item)
@@ -566,16 +607,15 @@ class FIFOQueue(Queue):
 
     def printStats(self):
         print("\tStats:\n")
-        print("\t\t-Visited nodes: ", len(self.closed_set))
-        print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
+        print("\t\t-Nodos visitados: ", len(self.closed_set))
+        print("\t\t-Nodos no visitados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
         print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2) # Generados con repetición
-        print("\t\t-Nodos generados: ", len(self.closed_set2)) # Generados sin repetición
-        print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
+        print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
 
     def printQualiyt(self):
-        print("\tQuality:\n")
-        print("\t\t-Speed (1 / visited nodes): ", round((1/len(self.closed_set)), 2))
-        print("\t\t-Memory (1 / generated nodes with rep): ", round(1 / self.stats2, 2), "\n")
+        print("\tCalidad:\n")
+        print("\t\t-Velocidad (1 / nodos visitados): ", round((1/len(self.closed_set)), 2))
+        print("\t\t-Memoria (1 / nodos generados con repetición): ", round(1 / self.stats2, 2), "\n")
 
 
 
@@ -586,7 +626,7 @@ Fig = {}
 #______________________________________________________________________________
 # New Queues: myFifoQueue, myFifoQueue_with_sub
 
-class myFifoQueue(Queue):
+class my_priority_queue(Queue):
 
     def __init__(self, problem):
         super().__init__()
@@ -623,19 +663,19 @@ class myFifoQueue(Queue):
 
     def printStats(self):
         print("\tStats:\n")
-        print("\t\t-Visited nodes: ", len(self.closed_set))
-        print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
+        print("\t\t-Nodos vistados: ", len(self.closed_set))
+        print("\t\t-Nodos no visitados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
+        #print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
         print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2) # Generados con repetición
-        print("\t\t-Nodos generados: ", len(self.closed_set2)) # Generados sin repetición
-        print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
+        print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
 
 
     def printQualiyt(self):
-        print("\tQuality:\n")
-        print("\t\t-Speed (1 / visited nodes): ", round((1/len(self.closed_set)), 2))
-        print("\t\t-Memory (1 / generated nodes with rep): ", round(1 / self.stats2, 2), "\n")
+        print("\tCalidad:\n")
+        print("\t\t-Velocidad (1 / nodos visitados): ", round((1/len(self.closed_set)), 2))
+        print("\t\t-Memoria (1 / nodos que han estado alguna vez en el fringe): ", round(1 / self.stats2, 2), "\n")
 
-class myFifoQueue_with_sub(Queue):
+class my_priority_queue_with_sub(Queue):
     def __init__(self, problem):
         super().__init__()
         self.queue = []
@@ -663,6 +703,7 @@ class myFifoQueue_with_sub(Queue):
     def pop(self):
         while self.queue:
             node = self.queue.pop(0)
+            #print(node.state)
             self.stats2 += 1
             if node.state not in self.closed_set:
                 self.closed_set.add(node.state)
@@ -671,13 +712,13 @@ class myFifoQueue_with_sub(Queue):
 
     def printStats(self):
         print("\tStats:\n")
-        print("\t\t-Visited nodes: ", len(self.closed_set))
-        print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
-        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2) # Generados con repetición
-        print("\t\t-Nodos generados: ", len(self.closed_set2)) # Generados sin repetición
-        print("\t\t-Nodos podados: ", abs(len(search.romania.locations) - self.stats2), "\n")
+        print("\t\t-Nodos visitados: ", len(self.closed_set))
+        print("\t\t-Nodos no vistados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
+        print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
+
 
     def printQualiyt(self):
-        print("\tQuality:\n")
-        print("\t\t-Speed (1 / visited nodes): ", round((1/len(self.closed_set)), 2))
-        print("\t\t-Memory (1 / generated nodes with rep): ", round(1 / self.stats2, 2), "\n")
+        print("\tCalidad:\n")
+        print("\t\t-Velocidad (1 / nodos visitados): ", round((1/len(self.closed_set)), 2))
+        print("\t\t-Memoria (1 / nodos que han estado alguna vez en el fringe): ", round(1 / self.stats2, 2), "\n")
