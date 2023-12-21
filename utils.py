@@ -533,6 +533,7 @@ class StackQueue:
         self.stack = []
         self.closed_set = set()
         self.closed_set2 = set()
+        self.closed_list = []
         self.problem = problem
 
     def append(self, item):
@@ -548,6 +549,7 @@ class StackQueue:
         self.stack.extend(items)
         for item in items:
             self.closed_set2.add(item.state)
+            self.closed_list.append(item.state)
 
     def is_empty(self):
         return not bool(self.stack)
@@ -559,7 +561,7 @@ class StackQueue:
         print("\tStats:\n")
         print("\t\t-Nodos visitados: ", len(self.closed_set))
         print("\t\t-Nodos no visitados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
-        print("\t\t-Nodos que han estado alguna vez en el fringe: ", len(self.closed_set)) # Generados con repetición
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.closed_list) # Generados con repetición
         print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
 
     def printQualiyt(self):
@@ -578,6 +580,7 @@ class FIFOQueue(Queue):
         self.closed_set = set()
         self.stats2 = 0
         self.closed_set2 = set()
+        self.closed_list = []
         self.problem = problem
 
     def append(self, item):
@@ -590,6 +593,7 @@ class FIFOQueue(Queue):
         self.A.extend(items)
         for item in items:
             self.closed_set2.add(item.state)
+            self.closed_list.append(item.state)
 
     def pop(self):
         e = self.A[self.start]
@@ -609,7 +613,7 @@ class FIFOQueue(Queue):
         print("\tStats:\n")
         print("\t\t-Nodos visitados: ", len(self.closed_set))
         print("\t\t-Nodos no visitados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
-        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2) # Generados con repetición
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.closed_list) # Generados con repetición
         print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
 
     def printQualiyt(self):
@@ -636,6 +640,7 @@ class my_priority_queue(Queue):
         self.problem = problem
         self.stats2 = 0
         self.closed_set2 = set()
+        self.closed_list = []
 
     def append(self, item):
         self.queue.append(item)
@@ -650,6 +655,7 @@ class my_priority_queue(Queue):
         self.queue = sorted(self.queue, key=lambda nodes: nodes.path_cost)
         for item in items:
             self.closed_set2.add(item.state)
+            self.closed_list.append(item.state)
         print(self.queue)
 
     def pop(self):
@@ -666,7 +672,7 @@ class my_priority_queue(Queue):
         print("\t\t-Nodos vistados: ", len(self.closed_set))
         print("\t\t-Nodos no visitados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
         #print("\t\t-Non visited nodes: ", len(search.romania.locations) - len(self.closed_set))
-        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2) # Generados con repetición
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.closed_list) # Generados con repetición
         print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
 
 
@@ -684,6 +690,7 @@ class my_priority_queue_with_sub(Queue):
         self.closed_set = set()
         self.stats2 = 0
         self.closed_set2 = set()
+        self.closed_list = []
 
     def append(self, item):
         self.queue.append(item)
@@ -698,6 +705,7 @@ class my_priority_queue_with_sub(Queue):
         self.queue.sort(key=lambda current_node: current_node.path_cost + search.GPSProblem.h(self.problem, current_node))
         for item in items:
             self.closed_set2.add(item.state)
+            self.closed_list.append(item.state)
         print(self.queue)
 
     def pop(self):
@@ -714,7 +722,7 @@ class my_priority_queue_with_sub(Queue):
         print("\tStats:\n")
         print("\t\t-Nodos visitados: ", len(self.closed_set))
         print("\t\t-Nodos no vistados: ", len(self.problem.graph.nodes()) - len(self.closed_set))
-        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.stats2)
+        print("\t\t-Nodos que han estado alguna vez en el fringe: ", self.closed_list)
         print("\t\t-Nodos expandidos: ", len(self.closed_set2)) # Generados sin repetición
 
 

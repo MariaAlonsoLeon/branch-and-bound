@@ -45,7 +45,7 @@ Por su parte, el algoritmo de Ramificación y Acotación con subestimación util
 
 La razón detrás de esta diferencia radica en la capacidad del algoritmo de Ramificación y Acotación con Sub para evitar explorar caminos que se estima que no conducen a una solución óptima. Esto hace que el algoritmo con subestimación sea más eficiente en términos de tiempo y recursos computacionales, lo que es especialmente beneficioso en problemas con espacios de búsqueda grandes y complejos.
 
-Por último, cabe destacar que al observar las formas de medición de la calidad (velocidad, memoria, y longitud de la solución) se ha podido comprobar que el algortimo de ramificación 
+Por último, cabe destacar que al observar las formas de medición de la calidad (velocidad, memoria, y longitud de la solución) se ve que el algoritmo de Branch and Bound con subestimación es el de mayor calidad de los cuatro mencionados.
 
 
 
